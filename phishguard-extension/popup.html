@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PhishGuard</title>
+
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="app-header">
+
+    <div class="brand">
+
+      <img
+        class="logo"
+        src="assets/logo.svg"
+        alt="PhishGuard logo"
+      >
+
+      <div class="brand-text">
+
+        <div class="brand-name-row">
+
+          <span class="brand-name">
+            PhishGuard
+          </span>
+
+          <span class="status-badge">
+            <span class="status-dot"></span>
+            Active
+          </span>
+
+        </div>
+
+        <span class="brand-subtitle">
+          AI Email Security
+        </span>
+
+      </div>
+
+    </div>
+
+    <button
+      class="icon-button"
+      id="settings-button"
+      type="button"
+      aria-label="Settings"
+    >
+      <span class="material-icon">tune</span>
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+
+  <main class="app-content">
+
+
+    <!-- ===================================================
+         READY STATE
+         =================================================== -->
+
+    <section
+      id="ready-state"
+      class="state"
+    >
+
+      <!-- Current email -->
+
+      <article class="email-card">
+
+        <div class="card-label-row">
+
+          <span class="card-label">
+
+            <span class="material-icon small primary">
+              mail
+            </span>
+
+            Current Email
+
+          </span>
+
+        </div>
+
+
+        <div class="email-details">
+
+          <div class="detail-row">
+
+            <span class="detail-label">
+              From:
+            </span>
+
+            <span class="detail-value">
+              billing-update@paypal-security.com
+            </span>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span class="detail-label">
+              Subject:
+            </span>
+
+            <span class="detail-value">
+              Action Required: Your account has been limited...
+            </span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- Main action -->
+
+      <button
+        id="inspect-button"
+        class="primary-button"
+        type="button"
+      >
+
+        <span class="material-icon">
+          security_update_good
+        </span>
+
+        <span>
+          Inspect this email
+        </span>
+
+        <span class="material-icon arrow">
+          arrow_forward
+        </span>
+
+      </button>
+
+
+      <!-- Explanation -->
+
+      <div class="info-message">
+
+        <span class="material-icon primary">
+          verified_user
+        </span>
+
+        <p>
+          PhishGuard analyzes the email for suspicious
+          patterns and phishing indicators.
+        </p>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         ANALYZING STATE
+         =================================================== -->
+
+    <section
+      id="analyzing-state"
+      class="state hidden"
+    >
+
+      <div class="analysis-card">
+
+        <div class="analysis-icon">
+
+          <span class="material-icon spinning">
+            progress_activity
+          </span>
+
+        </div>
+
+        <h2>
+          Analyzing email...
+        </h2>
+
+        <p>
+          Checking the message for suspicious patterns
+          and phishing indicators.
+        </p>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         RESULT STATE
+         =================================================== -->
+
+    <section
+      id="result-state"
+      class="state hidden"
+    >
+
+      <!-- Email being analyzed -->
+
+      <article class="email-summary">
+
+        <div class="email-icon">
+
+          <span class="material-icon">
+            mail
+          </span>
+
+        </div>
+
+
+        <div class="email-summary-text">
+
+          <span class="subject">
+            Action Required: Your account...
+          </span>
+
+          <span class="domain">
+            paypal-security.com
+          </span>
+
+        </div>
+
+
+        <span class="risk-badge">
+          High Risk
+        </span>
+
+      </article>
+
+
+      <!-- Prediction -->
+
+      <article class="result-card">
+
+        <div class="probability-circle">
+
+          <span>
+            94%
+          </span>
+
+        </div>
+
+        <span class="probability-label">
+          Phishing probability
+        </span>
+
+        <h2>
+          Likely Phishing
+        </h2>
+
+        <p>
+          The model detected several characteristics
+          associated with phishing emails.
+        </p>
+
+      </article>
+
+
+      <!-- Explanation -->
+
+      <article class="indicators-card">
+
+        <span class="section-label">
+          Why?
+        </span>
+
+
+        <div class="indicator">
+
+          <span class="material-icon danger">
+            domain_verification
+          </span>
+
+          <span>
+            Suspicious sender domain
+          </span>
+
+        </div>
+
+
+        <div class="indicator">
+
+          <span class="material-icon danger">
+            link_off
+          </span>
+
+          <span>
+            Suspicious link detected
+          </span>
+
+        </div>
+
+
+        <div class="indicator">
+
+          <span class="material-icon danger">
+            crisis_alert
+          </span>
+
+          <span>
+            Urgent language detected
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- More information -->
+
+      <button
+        id="details-button"
+        class="secondary-button"
+        type="button"
+      >
+
+        <span>
+          View details
+        </span>
+
+        <span class="material-icon">
+          arrow_forward
+        </span>
+
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+  <script src="popup.js"></script>
+
+</body>
+</html>

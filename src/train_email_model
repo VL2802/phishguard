@@ -1,0 +1,114 @@
+
+from pathlib import Path
+
+import joblib
+import pandas as pd
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    classification_report,
+    confusion_matrix,
+)
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+
+
+# 1. Set up project paths.
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+DATASET_PATH = PROJECT_DIR / "data" / "aura" / "Nazario_5.csv"
+MODEL_PATH = PROJECT_DIR / "models" / "email_model.joblib"
+
+# 2. Load the dataset.
+df = pd.read_csv(DATASET_PATH)
+
+# 3. Keep records with usable text and labels.
+required_columns = ["subject", "body", "label"]
+df = df.dropna(subset=required_columns).copy()
+
+# 4. Combine the subject and body.
+df["text"] = (
+    df["subject"].astype(str)
+    + " "
+    + df["body"].astype(str)
+)
+
+# 5. Validate class presence
+print("Label distribution:")
+print(df["label"].value_counts())
+
+if df["label"].nunique() != 2:
+    raise ValueError(
+        "Expected two classes. Check the label meanings "
+        "and choose a dataset containing both classes."
+    )
+
+# 6. Separate the input text (X) and the target labels (y).
+X = df["text"]
+y = df["label"]
+
+# 7. Split data into training and testing sets.
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.20,
+    random_state=42,
+    stratify=y,
+)
+
+# 8. Create a pipeline: from text to TF-IDF to classifier.
+model = Pipeline([
+    (
+        "tfidf",
+        TfidfVectorizer(
+            lowercase=True,
+            ngram_range=(1, 2),
+            max_features=30000,
+        ),
+    ),
+    (
+        "classifier",
+        LogisticRegression(
+            max_iter=1000,
+            class_weight="balanced",
+        ),
+    ),
+])
+
+# 9. Train using only the training set.
+model.fit(X_train, y_train)
+
+# 10. Evaluate on the held-out test set.
+predictions = model.predict(X_test)
+
+print("\nClassification report:")
+print(
+    classification_report(
+        y_test,
+        predictions,
+        zero_division=0,
+    )
+)
+
+print("\nConfusion matrix:")
+print(confusion_matrix(y_test, predictions))
+
+# 11. Save the complete pipeline.
+MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+joblib.dump(model, MODEL_PATH)
+
+print(f"\nModel saved to: {MODEL_PATH}")
+
+# 12. Test one new email.
+sample_email = (
+    "Urgent: Verify your account immediately "
+    "to avoid suspension. Enter your password."
+)
+
+print("\nExample prediction:")
+print("Predicted label:", model.predict([sample_email])[0])
+
+if hasattr(model, "predict_proba"):
+    probabilities = model.predict_proba([sample_email])[0]
+    print("Classes:", model.classes_)
+    print("Probabilities:", probabilities)

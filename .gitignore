@@ -1,0 +1,37 @@
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Generated model artifacts
+models/*.joblib
+models/*.pkl
+models/*.pickle
+
+# Datasets and derived data
+data/**/*.csv
+data/**/*.csv.gz
+data/**/*.json
+data/**/*.parquet
+
+# Notebook output and local experiments
+.ipynb_checkpoints/
+notebooks/*.html
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
